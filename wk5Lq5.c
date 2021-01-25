@@ -1,29 +1,26 @@
-/*print charzacter by character*/
-#include <stdlib.h>
 #include <stdio.h>
-#include <string.h>
-#include <ctype.h>
+#include <stdlib.h>
 
-#define REQ_ARGS 2
 #define NUM_ARGS 1
+#define REQ_ARGS 2
 
 FILE* open_file(const char* fname) {
     FILE* reader;
-
-    reader = fopen(fname, "r");
+    reader = fopen(fname, "rb");
     if (!reader) {
-        perror("fopen");
+        perror("fname");
     }
     return reader;
 }
 
-char write(FILE* reader) {
+char place(FILE* reader) {
     char c;
     c = fgetc(reader);
     while (c != EOF) {
         printf("%c", c);
         c = fgetc(reader);
     }
+    printf("\n");
     return c;
 }
 
@@ -31,9 +28,8 @@ int main(int argc, char* argv[]) {
     FILE* reader;
     char c;
 
-    /*detect if an appropriate filename exists*/
-    if (REQ_ARGS != argc) {
-        fprintf(stderr, "Error: please enter a filename! \n");
+    if (argc != REQ_ARGS) {
+        fprintf(stderr, "Error! Please enter a file to open!\n");
         return EXIT_FAILURE;
     }
 
@@ -43,12 +39,12 @@ int main(int argc, char* argv[]) {
         return EXIT_FAILURE;
     }
 
-    c = write(reader);
+    c = place(reader);
+
     if (!c) {
-        fprintf(
-            stderr,
-            "Error: the file has not been passed from main to the function \n");
+        fprintf(stderr, "Error: the file could not be processed.\n");
+        return EXIT_FAILURE;
     }
-    fclose(reader);
+
     return EXIT_SUCCESS;
 }
