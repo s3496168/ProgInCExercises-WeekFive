@@ -99,20 +99,20 @@ char tokeniser(FILE* reader) {
         /*itineration counter*/
 
         for (i = 0; i <= count; ++i) {
-           /* printf("Now is %d\n", i);   test statement */
+            /* printf("Now is %d\n", i);   test statement */
             /*attempt to tokenise each line*/
+
             tok = strtok(c, DELIM);
 
             while (tok != NULL) {
                 /*counter to itinerate waech time there is a token in the line*/
                 token++;
                 tok = strtok(NULL, DELIM);
-                
-            } /*end count for loop*/
+            } /* end count for loop*/
 
-            
-        } /*end while tok in not null loop*/
-    }     /*end fgets loop*/
+        } /*end while tok is not null loop*/
+
+    } /*end fgets loop*/
 
     return token;
 } /*end funtion*/
@@ -141,10 +141,10 @@ int main(int argc, char* argv[]) {
     characters = ftell(reader);
     fseek(reader, HERE, SEEK_SET);
     /*then go back*/
-   /* while(ftell(reader) >0){
-       fseek(reader, BACKWARDS, SEEK_CUR); 
+    while (ftell(reader) > 0) {
+        fseek(reader, BACKWARDS, SEEK_CUR);
     }
-    */
+
     z = countLine(reader);
     t = tokeniser(otherReader);
     if (!z) {
