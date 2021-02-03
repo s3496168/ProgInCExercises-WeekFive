@@ -10,6 +10,7 @@
 #define FORWARD 1
 #define LINELEN 80
 #define EXTRACHARS 2
+#define BACKWARDS -2
 
 #define DELIM " "
 
@@ -44,7 +45,7 @@ static void read_rest_of_line(FILE* reader) {
 }
 
 /*function to read lines*/
- char countLine(FILE* reader) {
+char countLine(FILE* reader) {
     char line[LINELEN + EXTRACHARS];
     int count;
     count = 0;
@@ -76,10 +77,10 @@ static void read_rest_of_line(FILE* reader) {
 char tokeniser(FILE* reader) {
     char c[LINELEN + EXTRACHARS];
     char token;
-  int count;
-    char * tok;
-     token =0;
-   
+    int count, i;
+    char* tok;
+    token = 0;
+
     c[strlen(c)] = 0;
     while (fgets(c, LINELEN + EXTRACHARS, reader)) {
         /*buffer overflow test and management*/
@@ -92,36 +93,31 @@ char tokeniser(FILE* reader) {
         }
         /*remove trailing newline*/
         c[strlen(c) - 1] = 0;
-       
-        /*attempt to tokenise each line*/
-        tok = strtok(c, DELIM);
-       
-        while (tok != NULL) {
-            /*counter to itinerate waech time there is a token in the line*/
-            token++;
-            tok = strtok(NULL, DELIM);
-        
-    }
-    /*itineration counter*/
+
+        /*itineration counter*/
         count += 1;
-        /*kill the loop*/
-        loop = TRUE;
-    
-   }
-    /*add the tokens identified in the line to the tokens identified in the
-     * other lines*/
-if(loop != FALSE){
-    token+=token;
-}
-    
+        /*itineration counter*/
+
+        for (i = 0; i <= count; ++i) {
+            /*attempt to tokenise each line*/
+            tok = strtok(c, DELIM);
+
+            while (tok != NULL) {
+                /*counter to itinerate waech time there is a token in the line*/
+                token++;
+                tok = strtok(NULL, DELIM);
+            } /*end count for loop*/
+
+            printf("Now is %d\n", i);
+        } /*end while tok in not null loop*/
+    }     /*end fgets loop*/
+
     return token;
-}
-
-
+} /*end funtion*/
 
 int main(int argc, char* argv[]) {
     FILE* reader;
-    FILE * otherReader;
+    FILE* otherReader;
     long characters;
     char z;
     char t;
@@ -142,14 +138,14 @@ int main(int argc, char* argv[]) {
     fseek(reader, HERE, SEEK_END);
     characters = ftell(reader);
     fseek(reader, HERE, SEEK_SET);
+    fseek(reader, BACKWARDS, SEEK_SET);
     z = countLine(reader);
     t = tokeniser(otherReader);
-   if (!z) {
+    if (!z) {
         fprintf(stderr, "Error, the line number could not be determined\n");
     }
 
     fprintf(stdout, "  %d  %d %ld %s\n", z, t, characters, argv[NUM_ARGS]);
-
 
     /*close the files*/
     fclose(reader);
